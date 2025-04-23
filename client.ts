@@ -14,14 +14,20 @@ async function main() {
   await client.connect(transport);
   console.log("Connected using Streamable HTTP transport");
 
-  const prompt = await client.getPrompt({
-    name: "echo",
-    arguments: {
-      message: "This is my message",
-    },
+  // const prompt = await client.getPrompt({
+  //   name: "echo",
+  //   arguments: {
+  //     message: "This is my message",
+  //   },
+  // });
+
+  // console.log(prompt);
+
+  const resource = await client.readResource({
+    uri: "echo://hello",
   });
 
-  console.log(prompt);
+  console.log(resource);
 }
 
 main();
