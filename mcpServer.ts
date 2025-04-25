@@ -26,6 +26,10 @@ server.tool("echo", { message: z.string() }, async ({ message }) => ({
   content: [{ type: "text", text: `Tool echo: ${message}` }],
 }));
 
+server.tool("add", { a: z.number(), b: z.number() }, async ({ a, b }) => ({
+  content: [{ type: "text", text: String(a + b) }],
+}));
+
 server.prompt("echo", { message: z.string() }, ({ message }) => ({
   messages: [
     {
