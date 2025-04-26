@@ -9,7 +9,7 @@ export async function prepareToolsForLLM(mcpClient: McpClient) {
     name: tool.name,
     description: tool.description || `Tool: ${tool.name}`,
     parameters: tool.inputSchema,
-    type: tool.type || "function", // Required by the
+    type: tool.type || "function", // Required by the OpenAI module
   }));
 
   return formattedTools;

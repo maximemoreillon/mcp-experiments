@@ -1,6 +1,7 @@
 import { Client as McpClient } from "@modelcontextprotocol/sdk/client/index.js";
 import { LLMClient } from "./llmClient";
 
+//REF: https://github.com/cyanheads/model-context-protocol-resources/blob/main/guides/mcp-client-development-guide.md#handling-tool-execution-and-results
 export async function processLLMResponse(
   mcpClient: McpClient,
   llmClient: LLMClient,
@@ -10,6 +11,7 @@ export async function processLLMResponse(
   // Check if the LLM wants to call a tool
   // This detection logic will depend on your LLM provider's response format
   if (llmResponse.tool_calls && llmResponse.tool_calls.length > 0) {
+    console.log("LLM response has tool calls");
     // Process each tool call
 
     for (const toolCall of llmResponse.tool_calls) {
@@ -30,6 +32,7 @@ export async function processLLMResponse(
           });
 
           // Add the tool call to the message history
+          // TODO: is this needed?
           // messages.push({
           //   role: "assistant",
           //   content: null, // PROBLEM: this cannot be null
@@ -37,14 +40,16 @@ export async function processLLMResponse(
           // });
 
           // Add the tool result to the message history
+          // TODO: Stuff had to be removed here
           messages.push({
-            // role: "tool",
             role: "assistant", // Invalid value: 'tool'. Supported values are: 'assistant', 'system', 'developer', and 'user'.
-            tool_call_id: id,
             content: toolResult.isError
               ? `Error: ${toolResult.content[0].text}`
               : toolResult.content[0].text,
+            // tool_call_id: id, // 400 Unknown parameter: 'input[1].tool_call_id'
           });
+
+          console.log("Made it until here!!");
         } catch (error) {
           console.error(`Error calling tool ${name}:`, error);
 
@@ -76,7 +81,7 @@ export async function processLLMResponse(
 }
 
 // Helper function to get user approval for tool calls
-async function getUserApproval(toolName, args) {
+async function getUserApproval(toolName: string, args) {
   // In a real application, you would show a UI dialog or prompt
   // For this example, we'll simulate user approval
   return new Promise((resolve) => {

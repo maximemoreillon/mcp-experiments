@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon httpServer.ts",
+    "server": "nodemon server/index.ts",
     "dev": "npm run server",
     "client": "ts-node client.ts",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -1,4 +1,5 @@
-import { setupLLMWithMCP } from "./llmClient";
+import { LLMClient } from "./llmClient";
+import { client as mcpClient, transport } from "./mcpClient";
 import { processLLMResponse } from "./response";
 import { prepareToolsForLLM } from "./tools";
 
@@ -6,21 +7,16 @@ import { prepareToolsForLLM } from "./tools";
 async function main() {
   const messages = [{ role: "user", content: "What is 3 + 4?" }];
 
-  const { llmClient, mcpClient } = await setupLLMWithMCP();
+  await mcpClient.connect(transport);
+  const llmClient = new LLMClient();
 
   const formattedTools = await prepareToolsForLLM(mcpClient);
-
-  // const userQuery = [{ role: "user", content: userPrompt }];
-
-  // const response = await queryLLMWithTools(
-  //   llmClient,
-  //   formattedTools,
-  //   userPrompt
-  // );
 
   const llmResponse = await llmClient.sendMessage(messages, {
     tools: formattedTools,
   });
+
+  // Until now pretty much OK, except for sendMessage where parsing of the response is not understood
 
   processLLMResponse(mcpClient, llmClient, llmResponse, messages);
 }

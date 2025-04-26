@@ -2,9 +2,7 @@ import { client as mcpClient, transport } from "./mcpClient";
 import { client as openAiClient } from "./openAi";
 // Hypothetical LLM client class (you'll replace this with your actual LLM client)
 
-type Message = {
-  content: string;
-};
+type Message = any;
 
 type Options = {
   tools?: any;
@@ -12,7 +10,7 @@ type Options = {
 };
 
 // https://github.com/cyanheads/model-context-protocol-resources/blob/main/guides/mcp-client-development-guide.md#5-integrating-with-llms
-
+// https://github.com/cyanheads/model-context-protocol-resources/blob/main/guides/mcp-client-development-guide.md#complete-llm-application
 export class LLMClient {
   // TODO: fing out what to do with options
 
@@ -29,28 +27,34 @@ export class LLMClient {
       tool_choice,
     });
 
-    const { id, arguments: args, name } = output[0];
+    const { id, type } = output[0];
 
-    // TODO: how to get from "completion to the following return?"
+    if (type === "function_call") {
+      const { arguments: args, name, call_id } = output[0];
+      return {
+        id,
+        // role,
+        // content,
+        // TODO: how to deal with tool calls?
+        tool_calls: [
+          {
+            name,
+            arguments: args,
+            id: call_id,
+          },
+        ],
+      };
+    } else if (type === "message") {
+      const { role, content } = output[0];
 
-    return {
-      id,
-      // role,
-      // content,
-      // TODO: how to deal with tool calls?
-      tool_calls: [{ name, arguments: args }], // Will contain tool call requests if any
-    };
+      return {
+        id,
+        role,
+        content,
+        tool_calls: [],
+      };
+    } else {
+      throw new Error("Unhandled response type");
+    }
   }
-}
-
-export async function setupLLMWithMCP() {
-  // Set up MCP client
-
-  await mcpClient.connect(transport);
-  // await mcpClient.initialize();
-
-  // Set up LLM client
-  const llmClient = new LLMClient();
-
-  return { mcpClient, llmClient };
 }
