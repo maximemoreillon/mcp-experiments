@@ -1,12 +1,13 @@
 import { Client as McpClient } from "@modelcontextprotocol/sdk/client/index.js";
-import { LLMClient } from "./llmClient";
+import { LLMClient, LlmResponse } from "./llmClient";
+import { ResponseInput } from "openai/resources/responses/responses";
 
 //REF: https://github.com/cyanheads/model-context-protocol-resources/blob/main/guides/mcp-client-development-guide.md#handling-tool-execution-and-results
 export async function processLLMResponse(
   mcpClient: McpClient,
   llmClient: LLMClient,
-  llmResponse,
-  messages
+  llmResponse: LlmResponse,
+  messages: ResponseInput
 ) {
   // Check if the LLM wants to call a tool
   // This detection logic will depend on your LLM provider's response format
@@ -41,22 +42,25 @@ export async function processLLMResponse(
 
           // Add the tool result to the message history
           // TODO: Stuff had to be removed here
+
+          const { content, isError } = toolResult;
+
+          const text = (content as { text: string }[])[0].text;
+
           messages.push({
-            role: "assistant", // Invalid value: 'tool'. Supported values are: 'assistant', 'system', 'developer', and 'user'.
-            content: toolResult.isError
-              ? `Error: ${toolResult.content[0].text}`
-              : toolResult.content[0].text,
+            // TODO: figure out what to do with role
+            // Invalid value: 'tool'. Supported values are: 'assistant', 'system', 'developer', and 'user'.
+            role: "assistant",
+            content: toolResult.isError ? `Error: ${text}` : text,
             // tool_call_id: id, // 400 Unknown parameter: 'input[1].tool_call_id'
           });
-
-          console.log("Made it until here!!");
-        } catch (error) {
+        } catch (error: any) {
           console.error(`Error calling tool ${name}:`, error);
 
           // Add error information to the message history
           messages.push({
-            role: "tool",
-            tool_call_id: id,
+            role: "assistant",
+            // tool_call_id: id,
             content: `Error executing tool ${name}: ${error.message}`,
           });
         }
@@ -81,7 +85,7 @@ export async function processLLMResponse(
 }
 
 // Helper function to get user approval for tool calls
-async function getUserApproval(toolName: string, args) {
+async function getUserApproval(toolName: string, args: Object) {
   // In a real application, you would show a UI dialog or prompt
   // For this example, we'll simulate user approval
   return new Promise((resolve) => {

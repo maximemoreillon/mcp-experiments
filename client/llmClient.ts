@@ -1,12 +1,24 @@
-import { client as mcpClient, transport } from "./mcpClient";
+import {
+  ResponseInput,
+  ResponseOutputRefusal,
+  ResponseOutputText,
+} from "openai/resources/responses/responses";
 import { client as openAiClient } from "./openAi";
-// Hypothetical LLM client class (you'll replace this with your actual LLM client)
-
-type Message = any;
 
 type Options = {
   tools?: any;
   tool_choice?: any;
+};
+
+export type LlmResponse = {
+  id?: string;
+  tool_calls?: Array<{
+    name: string;
+    arguments: string;
+    id: string;
+  }>;
+  role?: string;
+  content?: (ResponseOutputText | ResponseOutputRefusal)[];
 };
 
 // https://github.com/cyanheads/model-context-protocol-resources/blob/main/guides/mcp-client-development-guide.md#5-integrating-with-llms
@@ -14,7 +26,10 @@ type Options = {
 export class LLMClient {
   // TODO: fing out what to do with options
 
-  async sendMessage(messages: Message[], options: Options = {}) {
+  async sendMessage(
+    messages: ResponseInput,
+    options: Options = {}
+  ): Promise<LlmResponse> {
     // TODO: How to deal with message array?
 
     const { tools, tool_choice } = options;
@@ -33,9 +48,6 @@ export class LLMClient {
       const { arguments: args, name, call_id } = output[0];
       return {
         id,
-        // role,
-        // content,
-        // TODO: how to deal with tool calls?
         tool_calls: [
           {
             name,
