@@ -24,6 +24,8 @@ export type LlmResponse = {
 // https://github.com/cyanheads/model-context-protocol-resources/blob/main/guides/mcp-client-development-guide.md#5-integrating-with-llms
 // https://github.com/cyanheads/model-context-protocol-resources/blob/main/guides/mcp-client-development-guide.md#complete-llm-application
 export class LLMClient {
+  // TODO: add openAI client in here
+
   // TODO: fing out what to do with options
 
   async sendMessage(

@@ -1,7 +1,6 @@
 import { Client as McpClient } from "@modelcontextprotocol/sdk/client/index.js";
 
 export async function prepareToolsForLLM(mcpClient: McpClient) {
-  // Get available tools from MCP server
   const toolsResult = await mcpClient.listTools();
 
   const formattedTools = toolsResult.tools.map((tool) => ({

@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
-import { randomUUID } from "node:crypto";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { getServer } from "./mcpServer";
+// import { randomUUID } from "node:crypto";
+// import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+// import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 
 const app = express();
 app.use(express.json());

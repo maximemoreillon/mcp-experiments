@@ -17,8 +17,6 @@ async function main() {
     tools: formattedTools,
   });
 
-  // Until now pretty much OK, except for sendMessage where parsing of the response is not understood
-
   processLLMResponse(mcpClient, llmClient, llmResponse, messages);
 }
 
