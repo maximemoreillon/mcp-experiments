@@ -10,16 +10,12 @@ export const client = new Client({
 
 export const transport = new StreamableHTTPClientTransport(new URL(baseUrl));
 
-// if (process.argv[1] === import.meta.filename) {
-//   async function main() {
-//     await client.connect(transport);
-//     const result = await client.callTool({
-//       name: "echo",
-//       arguments: { message: "world" },
-//     });
+if (process.argv[1] === import.meta.filename) {
+  await client.connect(transport);
+  const result = await client.callTool({
+    name: "echo",
+    arguments: { message: "banana" },
+  });
 
-//     console.log(result);
-//   }
-
-//   main();
-// }
+  console.log(result);
+}

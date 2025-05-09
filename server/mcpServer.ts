@@ -4,6 +4,7 @@ import {
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 
+const invitees = ["John Doe", "Jane Smith"];
 export function getServer() {
   const server = new McpServer({
     name: "Echo",
@@ -18,6 +19,14 @@ export function getServer() {
     content: [{ type: "text", text: String(a + b) }],
   }));
 
+  server.tool("invite", { name: z.string() }, async ({ name }) => {
+    invitees.push(name);
+    console.log({ invitees });
+    return {
+      content: [{ type: "text", text: `${name} was invited` }],
+    };
+  });
+
   server.resource(
     "echo",
     new ResourceTemplate("echo://{message}", { list: undefined }),
@@ -31,12 +40,11 @@ export function getServer() {
     })
   );
 
-  // TODO: figure out the right way to write uris
-  server.resource("invitees", "invitees://", async (uri, {}) => ({
+  server.resource("invitees", "invitees://list", async (uri, {}) => ({
     contents: [
       {
         uri: uri.href,
-        text: JSON.stringify(["John Doe", "Jane Smith"]),
+        text: JSON.stringify(invitees),
       },
     ],
   }));

@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { type Request, type Response } from "express";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { getServer } from "./mcpServer";
 // import { randomUUID } from "node:crypto";
@@ -41,33 +41,33 @@ app.post("/mcp", async (req: Request, res: Response) => {
   }
 });
 
-app.get("/mcp", async (req: Request, res: Response) => {
-  console.log("Received GET MCP request");
-  res.writeHead(405).end(
-    JSON.stringify({
-      jsonrpc: "2.0",
-      error: {
-        code: -32000,
-        message: "Method not allowed.",
-      },
-      id: null,
-    })
-  );
-});
+// app.get("/mcp", async (req: Request, res: Response) => {
+//   console.log("Received GET MCP request");
+//   res.writeHead(405).end(
+//     JSON.stringify({
+//       jsonrpc: "2.0",
+//       error: {
+//         code: -32000,
+//         message: "Method not allowed.",
+//       },
+//       id: null,
+//     })
+//   );
+// });
 
-app.delete("/mcp", async (req: Request, res: Response) => {
-  console.log("Received DELETE MCP request");
-  res.writeHead(405).end(
-    JSON.stringify({
-      jsonrpc: "2.0",
-      error: {
-        code: -32000,
-        message: "Method not allowed.",
-      },
-      id: null,
-    })
-  );
-});
+// app.delete("/mcp", async (req: Request, res: Response) => {
+//   console.log("Received DELETE MCP request");
+//   res.writeHead(405).end(
+//     JSON.stringify({
+//       jsonrpc: "2.0",
+//       error: {
+//         code: -32000,
+//         message: "Method not allowed.",
+//       },
+//       id: null,
+//     })
+//   );
+// });
 
 // Start the server
 const PORT = 3000;

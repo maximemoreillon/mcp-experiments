@@ -9,16 +9,14 @@ export const client = new OpenAI({
   apiKey: OPENAI_API_KEY,
 });
 
-// if (process.argv[1] === import.meta.filename) {
-//   async function main() {
-//     const { output } = await client.responses.create({
-//       model: "gpt-4o",
-//       instructions: "You are a coding assistant that talks like a pirate",
-//       input: "Are semicolons optional in JavaScript?",
-//     });
+if (process.argv[1] === import.meta.filename) {
+  const { output } = await client.responses.create({
+    model: "gpt-4o",
+    instructions: "You are a coding assistant that talks like a pirate",
+    input: [
+      { role: "system", content: "Are semicolons optional in JavaScript?" },
+    ],
+  });
 
-//     console.log(output);
-//   }
-
-//   main();
-// }
+  console.log(output.at(0));
+}

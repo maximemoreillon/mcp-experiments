@@ -1,7 +1,7 @@
 import {
-  ResponseInput,
-  ResponseOutputRefusal,
-  ResponseOutputText,
+  type ResponseInput,
+  type ResponseOutputRefusal,
+  type ResponseOutputText,
 } from "openai/resources/responses/responses";
 import { client as openAiClient } from "./openAi";
 
@@ -41,8 +41,9 @@ export class LLMClient {
       instructions: "You are a helpful assistant",
       input: messages,
       tools,
-      tool_choice,
     });
+
+    console.log(output);
 
     const { id, type } = output[0];
 

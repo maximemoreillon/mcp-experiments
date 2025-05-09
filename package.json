@@ -1,26 +1,20 @@
 {
   "name": "mcp-experiments",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "server": "nodemon server/index.ts",
-    "dev": "npm run server",
-    "client": "ts-node client.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "module": "index.ts",
+  "type": "module",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.10.2",
+    "@modelcontextprotocol/sdk": "^1.11.0",
     "dotenv": "^16.5.0",
-    "openai": "^4.95.1"
+    "openai": "^4.97.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
-    "nodemon": "^3.1.9",
+    "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }
