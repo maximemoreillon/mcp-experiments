@@ -1,6 +1,6 @@
 import { Client as McpClient } from "@modelcontextprotocol/sdk/client/index.js";
-import { LLMClient, LlmResponse } from "./llmClient";
-import { ResponseInput } from "openai/resources/responses/responses";
+import type { LLMClient, LlmResponse } from "./llmClient";
+import type { ResponseInput } from "openai/resources/responses/responses";
 
 //REF: https://github.com/cyanheads/model-context-protocol-resources/blob/main/guides/mcp-client-development-guide.md#handling-tool-execution-and-results
 export async function processLLMResponse(
