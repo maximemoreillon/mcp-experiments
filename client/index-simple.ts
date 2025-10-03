@@ -38,7 +38,6 @@ const input: ResponseInput = [
   },
 ];
 
-// throw "BANANA";
 const { output } = await llmClient.responses.create({
   model,
   instructions,
@@ -47,8 +46,6 @@ const { output } = await llmClient.responses.create({
 });
 
 console.log(output[0]);
-
-// throw "Banana";
 
 if (output[0].type !== "function_call") throw Error("Not a function call");
 
